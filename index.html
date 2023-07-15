@@ -14,17 +14,22 @@
   <body>
     <form enctype="multipart/form-data">
       <div>
+        <label for="fullname">Клиент</label>
         <input type="text" id="fullname" name="fullname" placeholder="Клиент">
       </div>
       <div>
+        <label for="address">Адрес</label>
         <textarea id="address" name="address" placeholder="Адрес"></textarea>
       </div>
       <div>
+        <label for="phone">Телефон</label>
         <input type="text" id="phone" inputmode="numeric" name="phone" placeholder="Телефон" value="+7">
       </div>
 
       <div>
+        <label for="hvsQuantity">Количество ХВС</label>
         <select id="hvsQuantity" name="hvsQuantity">
+          <option value="0">0</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -38,7 +43,9 @@
         </select>
       </div>
       <div>
+        <label for="gvsQuantity">Количество ГВС</label>
         <select id="gvsQuantity" name="gvsQuantity">
+          <option value="0">0</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -52,46 +59,59 @@
         </select>
       </div>
       <div>
+        <label for="totalAmount">Сумма</label>
         <input type="text" id="totalAmount" name="totalAmount" placeholder="Сумма">
       </div>
       <div>
+        <label for="contactNumber">Номер телефона звонящего</label>
         <input type="text" id="contactNumber" inputmode="numeric" name="contactNumber" placeholder="Номер телефона звонящего">
       </div>
       <div>
+        <label for="city">Город</label>
         <select id="city" name="city">
-          <!-- Опции для городов будут динамически загружены -->
+          <option selected></option>
         </select>
       </div>
       <div>
+        <label for="district">Район</label>
         <select id="district" name="district">
-          <!-- Опции для районов будут динамически загружены -->
+          <option value="ЦАО" selected></option>
         </select>
       </div>
       <div>
+        <label for="street">Улица</label>
         <input type="text" id="street" name="street" placeholder="Улица">
       </div>
       <div>
+        <label for="house">Дом</label>
         <input type="text" id="house" name="house" placeholder="Дом">
       </div>
       <div>
+        <label for="building">Корпус</label>
         <input type="text" id="building" name="building" placeholder="Корпус">
       </div>
       <div>
+        <label for="apartment">Квартира</label>
         <input type="text" id="apartment" name="apartment" placeholder="Квартира">
       </div>
       <div>
+        <label for="entrance">Подъезд</label>
         <input type="text" id="entrance" name="entrance" placeholder="Подъезд">
       </div>
       <div>
+        <label for="floor">Этаж</label>
         <input type="text" id="floor" name="floor" placeholder="Этаж">
       </div>
       <div>
+        <label for="intercomCode">Код домофона</label>
         <input type="text" id="intercomCode" name="intercomCode" placeholder="Код домофона">
       </div>
       <div>
+        <label for="workDate">Дата проведения работ</label>
         <input type="text" id="workDate" name="workDate" placeholder="Дата проведения работ">
       </div>
       <div>
+        <label for="workInterval">Временной интервал работ</label>
         <select id="workInterval" name="workInterval">
           <option value="8:00 - 10:00">8:00 - 10:00</option>
           <option value="10:00 - 12:00">10:00 - 12:00</option>
@@ -103,6 +123,7 @@
         </select>
       </div>
       <div>
+        <label for="notes">Примечания</label>
         <textarea id="notes" name="notes" placeholder="Примечания"></textarea>
       </div>
       <div id="error"></div>
