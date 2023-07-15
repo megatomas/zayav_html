@@ -144,7 +144,7 @@
     <button type="reset" id="reset" style="margin-left: 10px">Отмена</button>
   </div>
 </form>
-
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
   function loadJSONFile(file, callback) {
@@ -252,5 +252,181 @@
     });
   });
 </script>
+<script>
+  let tg = window.Telegram.WebApp;
+  let submit = document.getElementById("submit");
+  let reset = document.getElementById("reset");
+  let phoneInput = document.getElementById("phone");
+  let contactNumberInput = document.getElementById("contactNumber");
+  let copyPhoneCheckbox = document.getElementById("copyPhoneCheckbox");
+  let citySelect = document.getElementById("city");
+  let districtSelect = document.getElementById("district");
+  let otherModelInput = document.getElementById("other_model");
+
+  copyPhoneCheckbox.addEventListener("change", function() {
+    if (copyPhoneCheckbox.checked) {
+      contactNumberInput.value = phoneInput.value;
+    } else {
+      contactNumberInput.value = "";
+    }
+  });
+
+  function loadJSONFile(file, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.overrideMimeType('application/json');
+    xhr.open('GET', file, true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        callback(xhr.responseText);
+      }
+    };
+    xhr.send(null);
+  }
+
+  function loadCities() {
+    loadJSONFile('all_city.json', function (response) {
+      var cities = JSON.parse(response);
+      cities.forEach(function (city) {
+        var option = document.createElement('option');
+        option.value = city.city;
+        option.textContent = city.city;
+        citySelect.appendChild(option);
+      });
+    });
+  }
+
+  function loadDistricts() {
+    citySelect.addEventListener('change', function () {
+      var selectedCity = citySelect.value;
+      districtSelect.innerHTML = '';
+      loadJSONFile('all_city.json', function (response) {
+        var cities = JSON.parse(response);
+        var selectedCityData = cities.find(function (city) {
+          return city.city === selectedCity;
+        });
+        if (selectedCityData && selectedCityData.raion) {
+          selectedCityData.raion.forEach(function (raion) {
+            var option = document.createElement('option');
+            option.value = raion;
+            option.textContent = raion;
+            districtSelect.appendChild(option);
+          });
+        }
+      });
+    });
+  }
+
+  loadCities();
+  loadDistricts();
+
+  submit.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    let hvsQuantity = document.getElementById("hvsQuantity");
+    let gvsQuantity = document.getElementById("gvsQuantity");
+    let totalAmount = document.getElementById("totalAmount");
+    let phone = document.getElementById("phone");
+    let contactNumber = document.getElementById("contactNumber");
+    let city = document.getElementById("city");
+    let district = document.getElementById("district");
+    let street = document.getElementById("street");
+    let house = document.getElementById("house");
+    let building = document.getElementById("building");
+    let apartment = document.getElementById("apartment");
+    let entrance = document.getElementById("entrance");
+    let floor = document.getElementById("floor");
+    let intercomCode = document.getElementById("intercomCode");
+    let workDate = document.getElementById("workDate");
+    let workInterval = document.getElementById("workInterval");
+    let notes = document.getElementById("notes");
+    let error = document.getElementById("error");
+
+    error.innerText = "";
+    let invalidFields = [];
+
+    if (totalAmount.value.trim() === "") {
+      totalAmount.classList.add("error");
+      invalidFields.push("Сумма");
+    } else {
+      totalAmount.classList.remove("error");
+    }
+
+    if (phone.value.trim() === "" || !/^\+7\d{10}$/.test(phone.value)) {
+      phone.classList.add("error");
+      invalidFields.push("Телефон");
+    } else {
+      phone.classList.remove("error");
+    }
+
+    if (contactNumber.value.trim() === "" || !/^\+7\d{10}$/.test(contactNumber.value)) {
+      contactNumber.classList.add("error");
+      invalidFields.push("Номер телефона звонящего");
+    } else {
+      contactNumber.classList.remove("error");
+    }
+
+    if (city.value.trim() === "") {
+      city.classList.add("error");
+      invalidFields.push("Город");
+    } else {
+      city.classList.remove("error");
+    }
+
+    if (district.value.trim() === "") {
+      district.classList.add("error");
+      invalidFields.push("Район");
+    } else {
+      district.classList.remove("error");
+    }
+
+    if (street.value.trim() === "") {
+      street.classList.add("error");
+      invalidFields.push("Улица");
+    } else {
+      street.classList.remove("error");
+    }
+
+    if (house.value.trim() === "") {
+      house.classList.add("error");
+      invalidFields.push("Дом");
+    } else {
+      house.classList.remove("error");
+    }
+
+    if (invalidFields.length > 0) {
+      error.innerText = "Пожалуйста, заполните следующие поля корректно: " + invalidFields.join(", ");
+      return;
+    }
+
+    let data = {
+      hvsQuantity: hvsQuantity.value,
+      gvsQuantity: gvsQuantity.value,
+      totalAmount: totalAmount.value,
+      phone: phone.value,
+      contactNumber: contactNumber.value,
+      city: city.value,
+      district: district.value,
+      street: street.value,
+      house: house.value,
+      building: building.value,
+      apartment: apartment.value,
+      entrance: entrance.value,
+      floor: floor.value,
+      intercomCode: intercomCode.value,
+      workDate: workDate.value,
+      workInterval: workInterval.value,
+      notes: notes.value
+    };
+
+    // Отправка данных или выполнение других действий с данными
+
+    console.log(data);
+  });
+
+  reset.addEventListener("click", () => {
+    // Действия при нажатии на кнопку "Отмена"
+  });
+</script>
+
 </body>
 </html>
