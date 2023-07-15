@@ -163,6 +163,23 @@
 
       loadCities();
       loadDistricts();
+
+      // Получаем все поля ввода текста и текстовые области
+      const inputFields = Array.from(document.querySelectorAll('input[type="text"], textarea'));
+
+      // Добавляем обработчик события нажатия клавиши для каждого поля ввода
+      inputFields.forEach((input, index) => {
+        input.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            // Устанавливаем фокус на следующее поле ввода, если оно существует
+            const nextIndex = index + 1;
+            if (nextIndex < inputFields.length) {
+              inputFields[nextIndex].focus();
+            }
+          }
+        });
+      });
     </script>
   </body>
 </html>
