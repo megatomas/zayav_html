@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
-<form id="myForm" enctype="multipart/form-data">
+<form enctype="multipart/form-data">
   <div>
     <label for="hvsQuantity">Количество ХВС</label>
     <select id="hvsQuantity" name="hvsQuantity">
@@ -234,33 +234,15 @@
     }
   });
 
-  // Обработчик отправки формы
-  document.getElementById('myForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Предотвращаем отправку формы
-
-    // Собираем данные из формы
-    var formData = new FormData(this);
-
-    // Отправляем данные на сервер
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/submit-form'); // Замените '/submit-form' на адрес вашего сервера для обработки данных
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        // Обработка успешного ответа сервера
-        console.log(xhr.responseText);
-        // Добавьте здесь код для отображения сообщения об успешной отправке или других действий
-      }
-    };
-    xhr.send(formData);
-  });
-
-  // Добавляем обработчик события нажатия клавиши для каждого поля ввода
+  // Получаем все поля ввода текста и текстовые области
   const inputFields = Array.from(document.querySelectorAll('input[type="text"], textarea'));
 
+  // Добавляем обработчик события нажатия клавиши для каждого поля ввода
   inputFields.forEach((input, index) => {
     input.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') {
         event.preventDefault();
+        // Устанавливаем фокус на следующее поле ввода, если оно существует
         const nextIndex = index + 1;
         if (nextIndex < inputFields.length) {
           inputFields[nextIndex].focus();
