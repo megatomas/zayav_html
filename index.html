@@ -62,7 +62,7 @@
 
   <div>
     <input type="checkbox" id="copyPhoneCheckbox" name="copyPhoneCheckbox">
-    <label for="copyPhoneCheckbox">Скопировать телефон</label>
+    <label for="copyPhoneCheckbox">Телефоны совпадают</label>
   </div>
 
   <div>
@@ -120,7 +120,7 @@
 
   <div>
     <label for="workDate">Дата проведения работ</label>
-    <input type="text" id="workDate" name="workDate" placeholder="Дата проведения работ">
+    <input type="text" id="workDate" name="workDate" placeholder="Дата проведения работ" readonly>
   </div>
 
   <div>
@@ -132,7 +132,6 @@
       <option value="14:00 - 16:00">14:00 - 16:00</option>
       <option value="16:00 - 18:00">16:00 - 18:00</option>
       <option value="18:00 - 20:00">18:00 - 20:00</option>
-      <option value="20:00 - 22:00">20:00 - 22:00</option>
     </select>
   </div>
   <div>
@@ -147,6 +146,7 @@
 </form>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
 <script>
   let tg = window.Telegram.WebApp;
   let submit = document.getElementById("submit");
@@ -213,6 +213,17 @@
 
   loadCities();
   loadDistricts();
+
+  // Get tomorrow's date
+  let tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  // Configure flatpickr date picker with Russian locale
+  flatpickr("#workDate", {
+    dateFormat: "d.m.Y",
+    defaultDate: tomorrow,
+    locale: "ru"
+  });
 
   submit.addEventListener("click", (event) => {
     event.preventDefault();
@@ -289,7 +300,7 @@
     }
 
     if (invalidFields.length > 0) {
-      error.innerText = "Please fill in the following fields correctly: " + invalidFields.join(", ");
+      error.innerText = "Пожалуйста, правильно заполните следующие поля: " + invalidFields.join(", ");
       return;
     }
 
