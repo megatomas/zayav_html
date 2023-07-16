@@ -148,112 +148,6 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-  function loadJSONFile(file, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.overrideMimeType('application/json');
-    xhr.open('GET', file, true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        callback(xhr.responseText);
-      }
-    };
-    xhr.send(null);
-  }
-
-  function loadCities() {
-    var citySelect = document.getElementById('city');
-    loadJSONFile('all_city.json', function (response) {
-      var cities = JSON.parse(response);
-      cities.forEach(function (city) {
-        var option = document.createElement('option');
-        option.value = city.city;
-        option.textContent = city.city;
-        citySelect.appendChild(option);
-      });
-    });
-  }
-
-  function loadDistricts() {
-    var citySelect = document.getElementById('city');
-    var districtSelect = document.getElementById('district');
-    citySelect.addEventListener('change', function () {
-      var selectedCity = citySelect.value;
-      districtSelect.innerHTML = '';
-      loadJSONFile('all_city.json', function (response) {
-        var cities = JSON.parse(response);
-        var selectedCityData = cities.find(function (city) {
-          return city.city === selectedCity;
-        });
-        if (selectedCityData && selectedCityData.raion) {
-          selectedCityData.raion.forEach(function (raion) {
-            var option = document.createElement('option');
-            option.value = raion;
-            option.textContent = raion;
-            districtSelect.appendChild(option);
-          });
-        }
-      });
-    });
-  }
-
-  loadCities();
-  loadDistricts();
-
-  // Получаем ссылки на поля ввода "Телефон" и "Номер телефона звонящего"
-  const phoneInput = document.getElementById('phone');
-  const contactNumberInput = document.getElementById('contactNumber');
-
-  // Получаем ссылку на чекбокс "Скопировать телефон"
-  const copyPhoneCheckbox = document.getElementById('copyPhoneCheckbox');
-
-  // Добавляем обработчик события изменения состояния чекбокса
-  copyPhoneCheckbox.addEventListener('change', function() {
-    if (copyPhoneCheckbox.checked) {
-      // Если чекбокс выбран, копируем значение из поля "Телефон" в поле "Номер телефона звонящего"
-      contactNumberInput.value = phoneInput.value;
-    } else {
-      // Если чекбокс не выбран, очищаем поле "Номер телефона звонящего"
-      contactNumberInput.value = '';
-    }
-  });
-
-  // Инициализируем flatpickr для поля "Дата проведения работ"
-  const workDateInput = document.getElementById('workDate');
-  flatpickr(workDateInput, {
-    enableTime: false,
-    dateFormat: 'd.m.Y',
-    minDate: 'today',
-    locale: {
-      months: {
-        shorthand: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-        longhand: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-      },
-      weekdays: {
-        shorthand: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-        longhand: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
-      }
-    }
-  });
-
-  // Получаем все поля ввода текста и текстовые области
-  const inputFields = Array.from(document.querySelectorAll('input[type="text"], textarea'));
-
-  // Добавляем обработчик события нажатия клавиши для каждого поля ввода
-  inputFields.forEach((input, index) => {
-    input.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        // Устанавливаем фокус на следующее поле ввода, если оно существует
-        const nextIndex = index + 1;
-        if (nextIndex < inputFields.length) {
-          inputFields[nextIndex].focus();
-          inputFields[nextIndex].setSelectionRange(inputFields[nextIndex].value.length, inputFields[nextIndex].value.length);
-        }
-      }
-    });
-  });
-</script>
-<script>
   let tg = window.Telegram.WebApp;
   let submit = document.getElementById("submit");
   let reset = document.getElementById("reset");
@@ -395,7 +289,7 @@
     }
 
     if (invalidFields.length > 0) {
-      error.innerText = "Пожалуйста, заполните следующие поля корректно: " + invalidFields.join(", ");
+      error.innerText = "Please fill in the following fields correctly: " + invalidFields.join(", ");
       return;
     }
 
@@ -419,13 +313,16 @@
       notes: notes.value
     };
 
-    // Отправка данных или выполнение других действий с данными
+    // Send data to Telegram
+    tg.sendData(JSON.stringify(data));
 
-    console.log(data);
+    // Close the window
+    tg.close();
   });
 
   reset.addEventListener("click", () => {
-    // Действия при нажатии на кнопку "Отмена"
+    // Actions when "Cancel" button is clicked
+    tg.close();
   });
 </script>
 
