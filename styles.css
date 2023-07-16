@@ -12,6 +12,10 @@ body {
   padding: 20px;
 }
 
+label {
+      font-weight: bold;
+    }
+
 form {
   flex-direction: column;
   align-items: center;
