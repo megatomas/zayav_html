@@ -335,6 +335,47 @@
     // Actions when "Cancel" button is clicked
     tg.close();
   });
+  document.addEventListener("DOMContentLoaded", function() {
+  let inputFields = document.querySelectorAll("input, select, textarea");
+  for (let i = 0; i < inputFields.length; i++) {
+    let currentField = inputFields[i];
+    currentField.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        let nextFieldIndex = i + 1;
+        if (nextFieldIndex < inputFields.length) {
+          let nextField = inputFields[nextFieldIndex];
+          nextField.focus();
+        }
+      }
+    });
+  }
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  let phoneInput = document.getElementById("phone");
+  let contactNumberInput = document.getElementById("contactNumber");
+
+  phoneInput.addEventListener("focus", function() {
+    if (phoneInput.value === "+7") {
+      setTimeout(function() {
+        phoneInput.setSelectionRange(2, 2);
+      }, 0);
+    }
+  });
+
+  contactNumberInput.addEventListener("focus", function() {
+    if (contactNumberInput.value === "+7") {
+      setTimeout(function() {
+        contactNumberInput.setSelectionRange(2, 2);
+      }, 0);
+    }
+  });
+});
+
+
 </script>
 
 </body>
